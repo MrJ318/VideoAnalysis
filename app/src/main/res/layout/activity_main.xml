@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.jevon.videoanalysis.MainActivity" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentTop="true"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/Theme.AppCompat.Light"
+            tools:ignore="MissingConstraints" />
+
+        <RelativeLayout
+            android:id="@+id/progresslayout"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_below="@id/toolbar_main"/>
+
+
+        <!--<LinearLayout
+            android:id="@+id/serachlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#F8F8F8"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/serachview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_edit_radius"
+                    android:inputType="textUri"
+                    android:lines="1" />
+
+                <TextView
+                    android:id="@+id/text_serach"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/serachview"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="10dp"
+                    android:onClick="@{(v)->vm.viewOnClick(v)}"
+                    android:text="搜索"
+                    android:textColor="#57B2E6" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.4dp"
+                android:layout_below="@id/serachview"
+                android:background="#EFEFF0" />
+        </LinearLayout>-->
+
+
+        <LinearLayout
+            android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#FFFFFF"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.4dp"
+                android:background="#EFEFF0" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btnBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:onClick="@{(v)->vm.viewOnClick(v)}"
+                    android:padding="10dp"
+                    android:src="@drawable/theme_toolbar_btn_back_fg_normal0" />
+
+                <ImageButton
+                    android:id="@+id/btnForward"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:onClick="@{(v)->vm.viewOnClick(v)}"
+                    android:padding="10dp"
+                    android:src="@drawable/theme_toolbar_btn_forward_fg_normal0" />
+
+                <ImageButton
+                    android:id="@+id/btnRefresh"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2.0dp"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:onClick="@{(v)->vm.viewOnClick(v)}"
+                    android:padding="10dp"
+                    android:src="@drawable/theme_adrbar_btn_refresh_normal0" />
+
+                <ImageButton
+                    android:id="@+id/btnHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:onClick="@{(v)->vm.viewOnClick(v)}"
+                    android:padding="10dp"
+                    android:src="@drawable/theme_toolbar_btn_home_fg_normal2" />
+
+                <ImageButton
+                    android:id="@+id/btnExit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:onClick="@{(v)->vm.viewOnClick(v)}"
+                    android:padding="10dp"
+                    android:src="@drawable/theme_menu_btn_quit_fg_normal0" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/tab"
+            android:layout_below="@id/progresslayout">
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</layout>

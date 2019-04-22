@@ -1,0 +1,136 @@
+@charset "utf-8";
+
+div,
+p,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+b,
+u,
+em,
+input,
+textarea,
+button,
+select,
+form,
+section,
+label,
+span,
+td,
+li,
+nav,
+footer,
+body,
+html,
+ul,
+i {
+	-webkit-box-sizing: border-box;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, .2);
+	padding: 0;
+	margin: 0;
+}
+
+ul,
+li,
+ol {
+	list-style: none;
+}
+
+a {
+	color: #333;
+	text-decoration: none;
+}
+
+a,
+img,
+input,
+button,
+textarea {
+	-webkit-touch-callout: none;
+}
+
+a:focus,
+a:active,
+a:hover,
+input,
+button,
+textarea {
+	outline: 0;
+}
+
+img {
+	display: block;
+}
+
+body,
+td,
+input,
+textarea,
+option,
+select,
+button {
+	font-family: "微软雅黑", helvetica, arial;
+	font-size: 1.4rem;
+	-webkit-text-size-adjust: none;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+body {
+	font-size: 1.4rem;
+	background-color: #F4F4F4;
+}
+
+.inner {
+	margin: .75rem .5rem 0;
+}
+
+
+.dh-list {
+	font-size: 0;
+	width: 100%;
+	overflow: hidden;
+}
+
+.dh-list li {
+	font-size: 1.4rem;
+	width: 25%;
+	float: left;
+}
+
+.fast-list li img,
+.fast-list li span,
+.dh-list li img,
+.dh-list li span {
+	display: block;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.fast-list li a,
+.dh-list li a {
+	display: block;
+}
+
+.dh-list {
+	padding: 8px 0 4px;
+}
+
+.dh-list li {
+	margin-bottom: 10px;
+}
+
+.dh-list li img {
+	width: 40px;
+	height: 40px;
+	border-radius: 8px;
+	margin-bottom: 2px;
+}
