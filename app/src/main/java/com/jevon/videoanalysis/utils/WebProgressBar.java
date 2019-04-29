@@ -46,7 +46,7 @@ public class WebProgressBar extends View {
         paint.setStrokeWidth(HEIGHT);//设置画笔的宽度
         paint.setAntiAlias(true);// 抗锯齿
         paint.setDither(true);// 使用抖动效果
-        paint.setColor(context.getResources().getColor(R.color.primary_light));//画笔设置颜色
+        paint.setColor(context.getResources().getColor(R.color.progress));//画笔设置颜色
 //    paint.setShader(shader);//画笔设置渐变
     }
 

@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="colorPrimary">#008DD2</color>
     <color name="colorPrimaryDark">#008DD2</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="primary_light">#1AC31D</color>
+
+    <!--icon背景色-->
+    <color name="ic_launcher_background">#00B5F9</color>
+
+    <color name="progress">#1AC31D</color>
+    <color name="white">#FEFEFE</color>
+    <color name="btnBackgroung">#F7F7F7</color>
+    <color name="line">#DEDEDE</color>
+    <color name="black">#181818</color>
+    <color name="aboutBackground">#EFEFF0</color>
 </resources>
