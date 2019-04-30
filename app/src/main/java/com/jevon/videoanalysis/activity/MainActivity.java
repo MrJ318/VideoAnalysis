@@ -1,12 +1,8 @@
 package com.jevon.videoanalysis.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -14,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import com.jevon.videoanalysis.R;
 import com.jevon.videoanalysis.databinding.ActivityMainBinding;
@@ -41,23 +40,24 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
 
         // 状态栏文本改为深色
-        this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
 
-        binding.setVm(this);
         initWebView();
         webView.loadUrl("file:///android_asset/Nav/index.html");
 //        webView.loadUrl("https://jx.618g.com/?url=https://m.youku.com/video/id_XNDEyOTMxNjM0NA==.html");
 
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
 
         // 设置toolbar
         setSupportActionBar(binding.toolbarMain);
 
         //初始化webview
-        RelativeLayout layout = binding.layoutWebview;
+        RelativeLayout layout = binding.layoutWebView;
         webView = new WebView(this, null);
         layout.addView(webView, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onShowCustomView(View view, IX5WebChromeClient.CustomViewCallback customViewCallback) {
-            ViewGroup group = (ViewGroup) binding.layoutWebview.getParent();
+            ViewGroup group = (ViewGroup) binding.layoutWebView.getParent();
             group.addView(view);
             myVideoView = view;
             callback = customViewCallback;

@@ -42,6 +42,7 @@
             android:layout_below="@id/view_line2"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
+            android:contentDescription="@string/contentDescription"
             android:src="@mipmap/ic_launcher" />
 
         <TextView
@@ -63,7 +64,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="30dp"
-            android:text="V1.0.1"
             android:textSize="15sp" />
 
         <LinearLayout
@@ -74,13 +74,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/text_checkversion"
+                android:id="@+id/text_CheckVersion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="18dp"
-                android:drawableEnd="@drawable/ic_action_goin"
+                android:drawableEnd="@drawable/ic_action_in"
                 android:onClick="@{(v)->vm.viewOnClick(v)}"
-                android:text="检查更新"
+                android:text="@string/check_version"
                 android:textSize="20sp" />
 
             <View
@@ -93,9 +93,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="18dp"
-                android:drawableEnd="@drawable/ic_action_goin"
+                android:drawableEnd="@drawable/ic_action_in"
                 android:onClick="@{(v)->vm.viewOnClick(v)}"
-                android:text="使用帮助"
+                android:text="@string/help"
                 android:textSize="20sp" />
 
 
@@ -109,9 +109,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="18dp"
-                android:drawableEnd="@drawable/ic_action_goin"
+                android:drawableEnd="@drawable/ic_action_in"
                 android:onClick="@{(v)->vm.viewOnClick(v)}"
-                android:text="项目主页"
+                android:text="@string/home"
                 android:textSize="20sp" />
 
             <View
@@ -124,9 +124,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="18dp"
-                android:drawableEnd="@drawable/ic_action_goin"
+                android:drawableEnd="@drawable/ic_action_in"
                 android:onClick="@{(v)->vm.viewOnClick(v)}"
-                android:text="免责声明"
+                android:text="@string/disclaimer"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -136,7 +136,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="6dp"
-            android:text="Design by Little guy" />
+            android:text="@string/author" />
 
     </RelativeLayout>
 </layout>

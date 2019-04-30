@@ -1,24 +1,22 @@
 package com.jevon.videoanalysis.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.View;
 
 import com.jevon.videoanalysis.R;
 import com.jevon.videoanalysis.databinding.ActivityAboutBinding;
 
 public class AboutActivity extends AppCompatActivity {
 
-    @SuppressLint({"InlinedApi", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +24,10 @@ public class AboutActivity extends AppCompatActivity {
         binding.setVm(this);
 
         // 状态栏文本改为深色
-        this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
 
         // 设置ToolBar
         setSupportActionBar(binding.toolbarAbout);
@@ -39,15 +40,16 @@ public class AboutActivity extends AppCompatActivity {
         try {
             PackageInfo pack = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
             String versonname = pack.versionName;
-            binding.textVersion.setText("V" + versonname);
+            binding.textVersion.setText(String.format(getResources().getString(R.string.version), versonname));
         } catch (PackageManager.NameNotFoundException e) {
+            binding.textVersion.setVisibility(View.INVISIBLE);
             e.printStackTrace();
         }
     }
 
     public void viewOnClick(View v) {
         switch (v.getId()) {
-            case R.id.text_checkversion:
+            case R.id.text_CheckVersion:
                 break;
             case R.id.text_help:
                 String msg = "1.在软件主页打开相应的视频网站\n2.打开视频播放界面，点击右上角的菜单，" +
@@ -78,6 +80,4 @@ public class AboutActivity extends AppCompatActivity {
         builder.setPositiveButton("确定", null);
         builder.show();
     }
-
-
 }

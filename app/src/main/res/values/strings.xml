@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">影视解析</string>
+    <string name="contentDescription">影视解析</string>
+    <string name="author">Design by Little guy</string>
+    <string name="check_version">检查更新</string>
+    <string name="help">使用帮助</string>
+    <string name="home">项目主页</string>
+    <string name="disclaimer">免责声明</string>
+    <string name="version">V %1$s</string>
 </resources>
