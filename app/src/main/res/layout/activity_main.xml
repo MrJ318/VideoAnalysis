@@ -53,7 +53,6 @@
                 android:id="@+id/btnBack"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2.5dp"
                 android:layout_weight="1"
                 android:background="@color/btnBackground"
                 android:contentDescription="@string/contentDescription"
@@ -65,7 +64,6 @@
                 android:id="@+id/btnForward"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2.5dp"
                 android:layout_weight="1"
                 android:background="@color/btnBackground"
                 android:contentDescription="@string/contentDescription"
@@ -75,9 +73,8 @@
 
             <ImageButton
                 android:id="@+id/btnRefresh"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2.0dp"
                 android:layout_weight="1"
                 android:background="@color/btnBackground"
                 android:contentDescription="@string/contentDescription"
@@ -89,7 +86,6 @@
                 android:id="@+id/btnMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2.5dp"
                 android:layout_weight="1"
                 android:background="@color/btnBackground"
                 android:contentDescription="@string/contentDescription"
@@ -101,7 +97,6 @@
                 android:id="@+id/btnHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2.5dp"
                 android:layout_weight="1"
                 android:background="@color/btnBackground"
                 android:contentDescription="@string/contentDescription"
@@ -116,7 +111,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/layout_navigation"
-            android:layout_below="@id/view_line">
+            android:layout_below="@id/view_line"
+            android:layout_marginTop="-3dp"
+            android:layout_marginBottom="3dp">
 
         </RelativeLayout>
 

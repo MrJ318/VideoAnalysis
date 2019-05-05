@@ -24,6 +24,8 @@ import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
+import cn.bmob.v3.update.BmobUpdateAgent;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -46,9 +48,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         initWebView();
-        webView.loadUrl("file:///android_asset/Nav/index.html");
-//        webView.loadUrl("https://jx.618g.com/?url=https://m.youku.com/video/id_XNDEyOTMxNjM0NA==.html");
-
+//        webView.loadUrl("file:///android_asset/Nav/index.html");
+        webView.loadUrl("https://jx.618g.com/?url=https://m.youku.com/video/id_XNDEyOTMxNjM0NA==.html");
+        BmobUpdateAgent.setUpdateOnlyWifi(false);
+        BmobUpdateAgent.update(this);
     }
 
     private void initWebView() {

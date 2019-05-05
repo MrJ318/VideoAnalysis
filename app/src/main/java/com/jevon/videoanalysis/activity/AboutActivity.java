@@ -15,6 +15,8 @@ import androidx.databinding.DataBindingUtil;
 import com.jevon.videoanalysis.R;
 import com.jevon.videoanalysis.databinding.ActivityAboutBinding;
 
+import cn.bmob.v3.update.BmobUpdateAgent;
+
 public class AboutActivity extends AppCompatActivity {
 
     @Override
@@ -50,6 +52,7 @@ public class AboutActivity extends AppCompatActivity {
     public void viewOnClick(View v) {
         switch (v.getId()) {
             case R.id.text_CheckVersion:
+                BmobUpdateAgent.forceUpdate(this);
                 break;
             case R.id.text_help:
                 String msg = "1.在软件主页打开相应的视频网站\n2.打开视频播放界面，点击右上角的菜单，" +

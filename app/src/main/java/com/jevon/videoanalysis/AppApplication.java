@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.tencent.smtt.sdk.QbSdk;
 
+import cn.bmob.v3.Bmob;
+
 /**
  * sdsaf
  *
@@ -19,6 +21,9 @@ public class AppApplication extends Application {
 
         //x5内核初始化接口
         QbSdk.initX5Environment(getApplicationContext(), cb);
+
+        //初始化BmobSDK
+        Bmob.initialize(this, "6501413678cda993739d192f1f916b2d");
     }
 
     //搜集本地tbs内核信息并上报服务器，服务器返回结果决定使用哪个内核。
