@@ -127,7 +127,7 @@
                 android:drawableEnd="@drawable/ic_action_in"
                 android:onClick="@{(v)->vm.viewOnClick(v)}"
                 android:text="@string/disclaimer"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <TextView
