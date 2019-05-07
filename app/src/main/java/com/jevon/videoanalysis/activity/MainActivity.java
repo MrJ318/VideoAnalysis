@@ -151,7 +151,8 @@ public class MainActivity extends AppCompatActivity {
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("提示");
-                builder.setMessage("软件第一次运行需要加载内核，可能会出现显示错乱或者视频无法播放等现象，退出软件并关闭后台再次打开即可正常");
+                builder.setMessage("1.软件第一次运行需要加载内核，可能会出现显示错乱或者视频无法播放等现象，退出软件并关闭后台再次打开即可正常\n" +
+                        "2.软件需要读写手机存储，当出现询问时请点击允许");
                 builder.setPositiveButton("我知道了", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -161,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void done(String s, BmobException e) {
                                 if (e != null) {
-                                    Log.d("Mr.J", "showDialog" + e.getMessage());
+                                    Log.d("Mr.J", "device-" + e.getMessage());
                                 }
                             }
                         });

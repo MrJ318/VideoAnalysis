@@ -19,7 +19,10 @@ import androidx.databinding.DataBindingUtil;
 import com.jevon.videoanalysis.R;
 import com.jevon.videoanalysis.databinding.ActivityAboutBinding;
 
+import cn.bmob.v3.listener.BmobUpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
+import cn.bmob.v3.update.UpdateResponse;
+import cn.bmob.v3.update.UpdateStatus;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -53,12 +56,23 @@ public class AboutActivity extends AppCompatActivity {
             binding.textVersion.setVisibility(View.INVISIBLE);
             e.printStackTrace();
         }
+
     }
 
     // 点击事件
     public void viewOnClick(View v) {
         switch (v.getId()) {
             case R.id.text_CheckVersion:
+                BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
+                    @Override
+                    public void onUpdateReturned(int i, UpdateResponse updateResponse) {
+                        if (i == UpdateStatus.No) {
+                            Toast.makeText(AboutActivity.this, "当前已是最新版本", Toast.LENGTH_SHORT).show();
+                        } else if (i != UpdateStatus.Yes) {
+                            Toast.makeText(AboutActivity.this, "UpdateStatus:" + i, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
                 checkPermission();
                 break;
             case R.id.text_help:
@@ -78,6 +92,7 @@ public class AboutActivity extends AppCompatActivity {
 
         }
     }
+
 
     // 显示dialog
     private void showDialog(String title, String message) {
