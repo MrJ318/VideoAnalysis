@@ -81,7 +81,7 @@
                 android:drawableEnd="@drawable/ic_action_in"
                 android:onClick="@{(v)->vm.viewOnClick(v)}"
                 android:text="@string/check_version"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -96,7 +96,7 @@
                 android:drawableEnd="@drawable/ic_action_in"
                 android:onClick="@{(v)->vm.viewOnClick(v)}"
                 android:text="@string/help"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
 
 
             <View
@@ -112,7 +112,7 @@
                 android:drawableEnd="@drawable/ic_action_in"
                 android:onClick="@{(v)->vm.viewOnClick(v)}"
                 android:text="@string/home"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                 android:drawableEnd="@drawable/ic_action_in"
                 android:onClick="@{(v)->vm.viewOnClick(v)}"
                 android:text="@string/disclaimer"
-                android:textSize="12sp" />
+                android:textSize="17sp" />
         </LinearLayout>
 
         <TextView
@@ -136,6 +136,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="6dp"
+            android:textSize="12sp"
             android:text="@string/author" />
 
     </RelativeLayout>

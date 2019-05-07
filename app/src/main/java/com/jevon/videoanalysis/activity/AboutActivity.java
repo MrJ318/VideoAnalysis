@@ -1,13 +1,17 @@
 package com.jevon.videoanalysis.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -18,6 +22,8 @@ import com.jevon.videoanalysis.databinding.ActivityAboutBinding;
 import cn.bmob.v3.update.BmobUpdateAgent;
 
 public class AboutActivity extends AppCompatActivity {
+
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +55,11 @@ public class AboutActivity extends AppCompatActivity {
         }
     }
 
+    // 点击事件
     public void viewOnClick(View v) {
         switch (v.getId()) {
             case R.id.text_CheckVersion:
-                BmobUpdateAgent.forceUpdate(this);
+                checkPermission();
                 break;
             case R.id.text_help:
                 String msg = "1.在软件主页打开相应的视频网站\n2.打开视频播放界面，点击右上角的菜单，" +
@@ -72,8 +79,7 @@ public class AboutActivity extends AppCompatActivity {
         }
     }
 
-    AlertDialog.Builder builder;
-
+    // 显示dialog
     private void showDialog(String title, String message) {
         if (builder == null) {
             builder = new AlertDialog.Builder(this);
@@ -82,5 +88,34 @@ public class AboutActivity extends AppCompatActivity {
         builder.setMessage(message);
         builder.setPositiveButton("确定", null);
         builder.show();
+    }
+
+    // 检查权限
+    public void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+            } else {
+                BmobUpdateAgent.forceUpdate(this);
+            }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            BmobUpdateAgent.forceUpdate(this);
+        } else {
+            Toast.makeText(this, "读写文档权限被拒绝，无法执行检查更新！", Toast.LENGTH_SHORT).show();
+        }
     }
 }

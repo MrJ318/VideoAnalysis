@@ -1,9 +1,13 @@
 package com.jevon.videoanalysis.activity;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,19 +15,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.jevon.videoanalysis.R;
+import com.jevon.videoanalysis.been.Device;
+import com.jevon.videoanalysis.been.VideoUrl;
 import com.jevon.videoanalysis.databinding.ActivityMainBinding;
 import com.jevon.videoanalysis.utils.WebProgressBar;
 import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
-import com.tencent.smtt.sdk.CookieSyncManager;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,76 +56,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         initWebView();
-        webView.loadUrl("file:///android_asset/Nav/index.html");
-//        webView.loadUrl("https://jx.618g.com/?url=https://m.youku.com/video/id_XNDEyOTMxNjM0NA==.html");
-        BmobUpdateAgent.setUpdateOnlyWifi(false);
-        BmobUpdateAgent.update(this);
-    }
+        checkPermission();
 
-    private void initWebView() {
-
-        // 设置toolbar
-        setSupportActionBar(binding.toolbarMain);
-
-        //初始化webview
-        RelativeLayout layout = binding.layoutWebView;
-        webView = new WebView(this, null);
-        layout.addView(webView, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-        // 加载进度条
-        RelativeLayout progresslayout = binding.layoutProgress;
-        progressBar = new WebProgressBar(this);
-        progresslayout.addView(progressBar, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-        //websetting
-        WebSettings webSetting = webView.getSettings();
-        webSetting.setAllowFileAccess(true);
-        webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-        webSetting.setSupportZoom(true);
-        webSetting.setBuiltInZoomControls(true);
-        webSetting.setUseWideViewPort(true);
-        webSetting.setSupportMultipleWindows(false);
-        webSetting.setDomStorageEnabled(true);
-        webSetting.setAppCacheEnabled(true);
-        webSetting.setJavaScriptEnabled(true);
-        webSetting.setGeolocationEnabled(true);
-        webSetting.setAppCacheMaxSize(Long.MAX_VALUE);
-        webSetting.setAppCachePath(this.getDir("appcache", 0).getPath());
-        webSetting.setDatabasePath(this.getDir("databases", 0).getPath());
-        webSetting.setGeolocationDatabasePath(this.getDir("geolocation", 0)
-                .getPath());
-        webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
-        CookieSyncManager.createInstance(this);
-        CookieSyncManager.getInstance().sync();
-
-        webView.setWebViewClient(new MyWebViewClient());
-        webView.setWebChromeClient(new MyWebChromeClient());
-    }
-
-    public void viewOnClick(View v) {
-
-        switch (v.getId()) {
-
-            case R.id.btnBack:
-                if (webView.canGoBack()) {
-                    webView.goBack();
-                }
-                break;
-            case R.id.btnForward:
-                if (webView.canGoForward()) {
-                    webView.goForward();
-                }
-                break;
-            case R.id.btnRefresh:
-                webView.reload();
-                break;
-            case R.id.btnMenu:
-                startActivity(new Intent(this, AboutActivity.class));
-                break;
-            case R.id.btnHome:
-                webView.loadUrl("file:///android_asset/Nav/index.html");
-                break;
-        }
     }
 
     @Override
@@ -134,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.ad2:
+                upLoadUrl();
                 webView.loadUrl("https://660e.com/?url=" + webView.getUrl());
                 break;
 
@@ -184,6 +125,124 @@ public class MainActivity extends AppCompatActivity {
             webView = null;
         }
         super.onDestroy();
+    }
+
+    // 上传播放地址
+    private void upLoadUrl() {
+        new Thread() {
+            @Override
+            public void run() {
+                VideoUrl videoUrl = new VideoUrl(webView.getUrl(), webView.getSettings().getUserAgentString());
+                videoUrl.save(new SaveListener<String>() {
+                    @Override
+                    public void done(String s, BmobException e) {
+                        if (e != null) {
+                            Log.d("Mr.J", "upLoadUrl:" + e.getMessage());
+                        }
+                    }
+                });
+            }
+        }.start();
+    }
+
+    // 检查权限
+    public void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("提示");
+                builder.setMessage("软件第一次运行需要加载内核，可能会出现显示错乱或者视频无法播放等现象，退出软件并关闭后台再次打开即可正常");
+                builder.setPositiveButton("我知道了", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+                        Device device = new Device(Build.MODEL, Build.BOARD, Build.SUPPORTED_ABIS, Build.VERSION.SDK_INT);
+                        device.save(new SaveListener<String>() {
+                            @Override
+                            public void done(String s, BmobException e) {
+                                if (e != null) {
+                                    Log.d("Mr.J", "showDialog" + e.getMessage());
+                                }
+                            }
+                        });
+                    }
+                });
+                builder.show();
+            } else {
+                BmobUpdateAgent.setUpdateOnlyWifi(false);
+                BmobUpdateAgent.update(this);
+            }
+        }
+    }
+
+    // 初始化webview
+    private void initWebView() {
+
+        // 设置toolbar
+        setSupportActionBar(binding.toolbarMain);
+
+        //初始化webview
+        RelativeLayout layout = binding.layoutWebView;
+        webView = new WebView(this, null);
+        layout.addView(webView, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        // 加载进度条
+        RelativeLayout progresslayout = binding.layoutProgress;
+        progressBar = new WebProgressBar(this);
+        progresslayout.addView(progressBar, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        //websetting
+        WebSettings webSetting = webView.getSettings();
+        webSetting.setAllowFileAccess(true);
+        webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        webSetting.setSupportZoom(true);
+        webSetting.setBuiltInZoomControls(true);
+        webSetting.setUseWideViewPort(true);
+        webSetting.setSupportMultipleWindows(false);
+        webSetting.setDomStorageEnabled(true);
+        webSetting.setAppCacheEnabled(true);
+        webSetting.setJavaScriptEnabled(true);
+        webSetting.setGeolocationEnabled(true);
+//        webSetting.setAppCacheMaxSize(Long.MAX_VALUE);
+//        webSetting.setAppCachePath(this.getDir("appcache", 0).getPath());
+//        webSetting.setDatabasePath(this.getDir("databases", 0).getPath());
+//        webSetting.setGeolocationDatabasePath(this.getDir("geolocation", 0)
+//                .getPath());
+//        webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
+//        CookieSyncManager.createInstance(this);
+//        CookieSyncManager.getInstance().sync();
+
+        webView.setWebViewClient(new MyWebViewClient());
+        webView.setWebChromeClient(new MyWebChromeClient());
+        webView.loadUrl("file:///android_asset/Nav/index.html");
+//        webView.loadUrl("https://jx.618g.com/?url=https://m.youku.com/video/id_XNDEyOTMxNjM0NA==.html");
+    }
+
+    // 工具栏事件
+    public void viewOnClick(View v) {
+
+        switch (v.getId()) {
+
+            case R.id.btnBack:
+                if (webView.canGoBack()) {
+                    webView.goBack();
+                }
+                break;
+            case R.id.btnForward:
+                if (webView.canGoForward()) {
+                    webView.goForward();
+                }
+                break;
+            case R.id.btnRefresh:
+                webView.reload();
+                break;
+            case R.id.btnMenu:
+                startActivity(new Intent(this, AboutActivity.class));
+                break;
+            case R.id.btnHome:
+                webView.loadUrl("file:///android_asset/Nav/index.html");
+                break;
+        }
     }
 
     /*************************************************************************************************/

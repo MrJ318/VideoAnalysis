@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <base-config cleartextTrafficPermitted="true" />
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">open-vip.bmob.cn</domain>
+        <domain includeSubdomains="true">open2.bmob.cn</domain>
+        <domain includeSubdomains="true">bmob-cdn-25285.b0.upaiyun.com</domain>
+    </domain-config>
 </network-security-config>
