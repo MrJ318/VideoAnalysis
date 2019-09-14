@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -84,9 +85,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.ad4:
                 webView.loadUrl("http://www.fantee.net/fantee/?url=" + webView.getUrl());
                 break;
-            case R.id.ad5:
-                webView.loadUrl("http://jx.aeidu.cn/index.php?url=" + webView.getUrl());
+            case R.id.ad6:
+                Uri uri = Uri.parse("https://beaacc.com/api.php?url=" + webView.getUrl());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
                 break;
+
         }
         return true;
     }
