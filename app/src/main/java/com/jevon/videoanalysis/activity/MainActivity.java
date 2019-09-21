@@ -1,9 +1,6 @@
 package com.jevon.videoanalysis.activity;
 
-import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Build;
@@ -15,15 +12,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.jevon.videoanalysis.R;
-import com.jevon.videoanalysis.been.Device;
-import com.jevon.videoanalysis.been.VideoUrl;
+import com.jevon.videoanalysis.been.BrowseInfo;
 import com.jevon.videoanalysis.databinding.ActivityMainBinding;
+import com.jevon.videoanalysis.utils.UrlUtils;
 import com.jevon.videoanalysis.utils.WebProgressBar;
 import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
 import com.tencent.smtt.sdk.WebChromeClient;
@@ -31,12 +28,16 @@ import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.update.BmobUpdateAgent;
+
 
 public class MainActivity extends AppCompatActivity {
 
+    private Map<String, String> urlMap;
     private ActivityMainBinding binding;
     private WebView webView;
     private WebProgressBar progressBar;
@@ -57,8 +58,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         initWebView();
-        checkPermission();
+        urlMap = UrlUtils.getUrl(this);
+//        checkPermission();
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        urlMap = UrlUtils.getUrl(this);
     }
 
     @Override
@@ -69,36 +77,51 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() != R.id.ad6) {
+            String url = webView.getUrl();
+            upLoadUrl(url);
+        }
         switch (item.getItemId()) {
             case R.id.ad1:
-                webView.loadUrl("https://jx.618g.com/?url=" + webView.getUrl());
+                webView.loadUrl(urlMap.get("url1") + webView.getUrl());
                 break;
-
             case R.id.ad2:
-                upLoadUrl();
-                webView.loadUrl("https://660e.com/?url=" + webView.getUrl());
+                webView.loadUrl(urlMap.get("url2") + webView.getUrl());
                 break;
-
             case R.id.ad3:
-                webView.loadUrl("http://jx.618ge.com/?url=" + webView.getUrl());
+                webView.loadUrl(urlMap.get("url3") + webView.getUrl());
                 break;
             case R.id.ad4:
-                webView.loadUrl("http://www.fantee.net/fantee/?url=" + webView.getUrl());
+                webView.loadUrl(urlMap.get("url4") + webView.getUrl());
                 break;
+            case R.id.ad5:
+                webView.loadUrl(urlMap.get("url5") + webView.getUrl());
+                break;
+
             case R.id.ad6:
-                Uri uri = Uri.parse("https://beaacc.com/api.php?url=" + webView.getUrl());
+                String url = webView.getUrl();
+                if (url.equals("file:///android_asset/Nav/index.html")) {
+                    return true;
+                }
+                Uri uri = Uri.parse(url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
                 break;
-
         }
         return true;
     }
 
+    long startTime = 0;
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView != null && webView.canGoBack()) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView != null && webView.canGoBack() && !webView.getUrl().equals("file:///android_asset/Nav/index.html")) {
             webView.goBack();
+            return true;
+        }
+        if (System.currentTimeMillis() - startTime > 2000) {
+            startTime = System.currentTimeMillis();
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -132,12 +155,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 上传播放地址
-    private void upLoadUrl() {
+    private void upLoadUrl(final String url) {
         new Thread() {
             @Override
             public void run() {
-                VideoUrl videoUrl = new VideoUrl(webView.getUrl(), webView.getSettings().getUserAgentString());
-                videoUrl.save(new SaveListener<String>() {
+                BrowseInfo browseInfo = new BrowseInfo();
+                browseInfo.setName(Build.MODEL);
+                browseInfo.setSdk(Build.VERSION.SDK_INT + "");
+                browseInfo.setCpu(Arrays.toString(Build.SUPPORTED_ABIS));
+                browseInfo.setBoard(Build.BOARD);
+                browseInfo.setUserAgent(webView.getSettings().getUserAgentString());
+                browseInfo.setUrl(url);
+                browseInfo.save(new SaveListener<String>() {
                     @Override
                     public void done(String s, BmobException e) {
                         if (e != null) {
@@ -147,37 +176,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }.start();
-    }
-
-    // 检查权限
-    public void checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("提示");
-                builder.setMessage("1.软件第一次运行需要加载内核，可能会出现显示错乱或者视频无法播放等现象，退出软件并关闭后台再次打开即可正常\n" +
-                        "2.软件需要读写手机存储，当出现询问时请点击允许");
-                builder.setPositiveButton("我知道了", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-                        Device device = new Device(Build.MODEL, Build.BOARD, Build.SUPPORTED_ABIS, Build.VERSION.SDK_INT);
-                        device.save(new SaveListener<String>() {
-                            @Override
-                            public void done(String s, BmobException e) {
-                                if (e != null) {
-                                    Log.d("Mr.J", "device-" + e.getMessage());
-                                }
-                            }
-                        });
-                    }
-                });
-                builder.show();
-            } else {
-                BmobUpdateAgent.setUpdateOnlyWifi(false);
-                BmobUpdateAgent.update(this);
-            }
-        }
     }
 
     // 初始化webview

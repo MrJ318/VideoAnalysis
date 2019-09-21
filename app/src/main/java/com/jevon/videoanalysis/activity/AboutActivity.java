@@ -17,9 +17,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.jevon.videoanalysis.R;
+import com.jevon.videoanalysis.been.AnalysisUrl;
 import com.jevon.videoanalysis.databinding.ActivityAboutBinding;
+import com.jevon.videoanalysis.utils.UrlUtils;
 
+import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.BmobUpdateListener;
+import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
 import cn.bmob.v3.update.UpdateResponse;
 import cn.bmob.v3.update.UpdateStatus;
@@ -88,6 +92,9 @@ public class AboutActivity extends AppCompatActivity {
                 break;
             case R.id.text_disclaimer:
                 showDialog("免责声明", "1.所有视频资源均来自网络，本软件只做整理，版权归原作者所有\n2.仅供个人交流学习使用，不做任何商业用途");
+                break;
+            case R.id.text_CheckUrl:
+                UrlUtils.updateUrl(AboutActivity.this);
                 break;
 
         }

@@ -5,9 +5,9 @@ android {
     defaultConfig {
         applicationId "com.jevon.videoanalysis"
         minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.1.6"
+        targetSdkVersion 26
+        versionCode 2
+        versionName "1.2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
@@ -30,13 +30,11 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation files('libs/tbs_sdk_thirdapp_v3.6.0.1310_43612_sharewithdownload_withoutGame_obfs_20180706_163319.jar')
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     //在app的build.gradle文件中添加依赖文件：
     implementation 'cn.bmob.android:bmob-sdk:3.7.3-rc1'
@@ -48,4 +46,6 @@ dependencies {
 
     // 如果需要兼容Android6.0系统，请添加以下两项：
     implementation 'cn.bmob.android:http-legacy:1.0'
+
+    implementation 'com.tencent.tbs.tbssdk:sdk:43697'
 }
