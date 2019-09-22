@@ -115,14 +115,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView != null && webView.canGoBack() && !webView.getUrl().equals("file:///android_asset/Nav/index.html")) {
-            webView.goBack();
-            return true;
-        }
-        if (System.currentTimeMillis() - startTime > 2000) {
-            startTime = System.currentTimeMillis();
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-            return true;
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (webView != null && webView.canGoBack() && !webView.getUrl().equals("file:///android_asset/Nav/index.html")) {
+                webView.goBack();
+                return true;
+            } else {
+                if (System.currentTimeMillis() - startTime > 2000) {
+                    startTime = System.currentTimeMillis();
+                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
